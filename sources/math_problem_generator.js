@@ -162,7 +162,7 @@ function nextArithmetic(variation, baseText, numSolved, questNum, diff, attempts
         ansChoices.push(getCloseAns(ansChoices));
         ansChoices.push(getRandAns(ansChoices, 11, 300));
         
-        let question = baseText + "What is: " + a + " + " + b + "?\n";
+        let question = baseText + "What is: " + a + " + " + b + "?";
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     } else if (variation == 1) { // 1-3 Digit subtration.
         let a = nextRandInt(1, 200);
@@ -175,7 +175,7 @@ function nextArithmetic(variation, baseText, numSolved, questNum, diff, attempts
         ansChoices.push(getCloseAns(ansChoices));
         ansChoices.push(getRandAns(ansChoices, 0, 199));
         
-        let question = baseText + "What is: " + a + " - " + b + "?\n";
+        let question = baseText + "What is: " + a + " - " + b + "?";
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     } else { //1-2 Digit multiplication
         let a = nextRandInt(1, 30);
@@ -189,7 +189,7 @@ function nextArithmetic(variation, baseText, numSolved, questNum, diff, attempts
         ansChoices.push(getCloseAns(ansChoices));
         ansChoices.push(getRandAns(ansChoices, 1, 300));
         
-        let question = baseText + "What is: " + a + " * " + b + "?\n";
+        let question = baseText + "What is: " + a + " * " + b + "?";
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     }
 }
