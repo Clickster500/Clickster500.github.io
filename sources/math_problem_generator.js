@@ -111,6 +111,7 @@ function questionSetup(numSolved, questNum, totAttempts) {
 }
 
 async function nextQuestion(numSolved, questNum, diff, attempts, totAttempts) {
+    console.log("Just testing")
     let baseText = getBaseText(numSolved, questNum, attempts);
     
     // Negative numSolved values correspond to practicing a specific difficulty.
@@ -162,7 +163,7 @@ function nextArithmetic(variation, baseText, numSolved, questNum, diff, attempts
         ansChoices.push(getCloseAns(ansChoices));
         ansChoices.push(getRandAns(ansChoices, 11, 300));
         
-        let question = baseText + "What is: " + a + " + " + b + "?\n";
+        let question = baseText + "What is: " + a + " + " + b + "?";
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     } else if (variation == 1) { // 1-3 Digit subtration.
         let a = nextRandInt(1, 200);
@@ -175,7 +176,7 @@ function nextArithmetic(variation, baseText, numSolved, questNum, diff, attempts
         ansChoices.push(getCloseAns(ansChoices));
         ansChoices.push(getRandAns(ansChoices, 0, 199));
         
-        let question = baseText + "What is: " + a + " - " + b + "?\n";
+        let question = baseText + "What is: " + a + " - " + b + "?";
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     } else { //1-2 Digit multiplication
         let a = nextRandInt(1, 30);
@@ -189,7 +190,7 @@ function nextArithmetic(variation, baseText, numSolved, questNum, diff, attempts
         ansChoices.push(getCloseAns(ansChoices));
         ansChoices.push(getRandAns(ansChoices, 1, 300));
         
-        let question = baseText + "What is: " + a + " * " + b + "?\n";
+        let question = baseText + "What is: " + a + " * " + b + "?";
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     }
 }
@@ -400,6 +401,7 @@ function choice(numSolved, questNum, diff, attempts, totAttempts, keyVal) {
 
 function begin(numSolved = 0) {
     removeClass("begin");
+    console.log("VS Code testing")
     
     let introduction = "You should be able to solve all problems in your head";
     introduction += ", but pen/pencil and paper is allowed.<br>"
