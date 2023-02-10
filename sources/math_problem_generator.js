@@ -401,6 +401,7 @@ function choice(numSolved, questNum, diff, attempts, totAttempts, keyVal) {
 
 function begin(numSolved = 0) {
     removeClass("begin");
+    console.log("VS Code testing")
     
     let introduction = "You should be able to solve all problems in your head";
     introduction += ", but pen/pencil and paper is allowed.<br>"
