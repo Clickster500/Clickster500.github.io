@@ -211,7 +211,7 @@ function nextAlgebra(variation, baseText, numSolved, questNum, diff, attempts, t
         ansChoices.push(getRandAns(ansChoices, -20, 20));
         
         let operator = getOperator(b);
-        let question = baseText + "Solve for x: " + a + "(x" + operator + Math.abs(b) + ") = " + na + '\n';
+        let question = baseText + "Solve for x: " + a + "(x" + operator + Math.abs(b) + ") = " + na;
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     } else if (variation == 1) { // Evaluate x(ax + b) at x = c.
         let a = nextRandInt(-5, 5);
@@ -231,7 +231,7 @@ function nextAlgebra(variation, baseText, numSolved, questNum, diff, attempts, t
         ansChoices.push(getRandAns(ansChoices, -240, 240));
         
         let operator = getOperator(b);
-        let question = baseText + "Evaluate when x=" + c + ":    " + "x(" + a + "*x" + operator + Math.abs(b) + ")\n";
+        let question = baseText + "Evaluate when x=" + c + ":    " + "x(" + a + "*x" + operator + Math.abs(b) + ")";
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     } else { // What is the y-intercept / or slope: y = mx + b
         let m = getRandAns([0], -1000, 1000);
@@ -252,7 +252,7 @@ function nextAlgebra(variation, baseText, numSolved, questNum, diff, attempts, t
         ansChoices.push(getRandAns(ansChoices, -1000, 1000));
         
         let operator = getOperator(b);
-        let question = baseText + "What is the " + goal + " of:    y = " + m + "*x" + operator + Math.abs(b) + "\n";
+        let question = baseText + "What is the " + goal + " of:    y = " + m + "*x" + operator + Math.abs(b);
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     }
 }
@@ -280,7 +280,7 @@ function nextGeometry(variation, baseText, numSolved, questNum, diff, attempts, 
         }
         
         let question = baseText + "In a 30°-60°-90° triangle, the short leg has a length of " + a + ".<br>";
-        question += "What is the length of the " + goal + "?\n";
+        question += "What is the length of the " + goal + "?";
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     } else if (variation == 1) { // sin(x) in first quadrant
         const ANGLES = ["0°", "30°", "45°", "60°", "90°"];
@@ -291,7 +291,7 @@ function nextGeometry(variation, baseText, numSolved, questNum, diff, attempts, 
         let lastAns = ans.splice(nextRandInt(0, 3), 1);
         let ansChoices = [trueAns, ans[0], ans[1], ans[2], lastAns];
         
-        let question = baseText + "What is sin(" + ANGLES[index] + ")?\n";
+        let question = baseText + "What is sin(" + ANGLES[index] + ")?";
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     } else { // Volume of a cylinder, V = pi r^2 h
         let r = getRandAns([2], 1, 6);
@@ -309,7 +309,7 @@ function nextGeometry(variation, baseText, numSolved, questNum, diff, attempts, 
             ansChoices.push(ansCoeffs[i] + 'π');
         }
     
-        let question = baseText + "What is the volume of a cylinder with radius = " + r + " and height = " + h + "?\n";
+        let question = baseText + "What is the volume of a cylinder with radius = " + r + " and height = " + h + "?";
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     }
 }
@@ -336,7 +336,7 @@ function nextCalculus(variation, baseText, numSolved, questNum, diff, attempts, 
             }
         }
         
-        let question = baseText + "What is the area under y = 2x from x=" + a + " to x=" + b + "?\n";
+        let question = baseText + "What is the area under y = 2x from x=" + a + " to x=" + b + "?";
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     } else if (variation == 1) { // Derivative of ±sin(ax) and cos(ax).
         let a = nextRandInt(1, 100);
@@ -360,7 +360,7 @@ function nextCalculus(variation, baseText, numSolved, questNum, diff, attempts, 
         ansChoices.push(-1*trueCoeff + sinOrCos[index]);
         ansChoices.push(getCloseAns([trueCoeff, -1*trueCoeff]) + sinOrCos[1 - index]);
         
-        let question = baseText + "What is the derivative (with respect to x) of " + goal + "?\n";
+        let question = baseText + "What is the derivative (with respect to x) of " + goal + "?";
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     } else { // What function(s) have the derivative f'(x) = ae^(ax) + bx + c?
         let a = getRandAns([0], -10, 10);
@@ -375,7 +375,7 @@ function nextCalculus(variation, baseText, numSolved, questNum, diff, attempts, 
         
         let ansChoices = [trueAns, derivativeAns, multAns, multSignAns, signAns];
         let question = baseText + "What functions have the derivative f'(x) = ";
-        question += a + "e^(" + a + "x)" + getOperator(b) + Math.abs(b) + 'x' + getOperator(c) + Math.abs(c) + "?\n";
+        question += a + "e^(" + a + "x)" + getOperator(b) + Math.abs(b) + 'x' + getOperator(c) + Math.abs(c) + "?";
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     }
 }
