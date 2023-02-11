@@ -111,7 +111,6 @@ function questionSetup(numSolved, questNum, totAttempts) {
 }
 
 async function nextQuestion(numSolved, questNum, diff, attempts, totAttempts) {
-    console.log("Just testing")
     let baseText = getBaseText(numSolved, questNum, attempts);
     
     // Negative numSolved values correspond to practicing a specific difficulty.
@@ -401,7 +400,6 @@ function choice(numSolved, questNum, diff, attempts, totAttempts, keyVal) {
 
 function begin(numSolved = 0) {
     removeClass("begin");
-    console.log("VS Code testing")
     
     let introduction = "You should be able to solve all problems in your head";
     introduction += ", but pen/pencil and paper is allowed.<br>"
