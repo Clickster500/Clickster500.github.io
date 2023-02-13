@@ -1,11 +1,12 @@
 const MAP_NAMES = ["00/01", "02/03", "04/05", "06/07", "08", "09", "10", "11/12", "13", "14", "15", "16", "17", "18", "19", "e00", "e01", "e02"];
 const ANSWER_KEY = ['A', 'B', 'C', 'D', 'E'];
-const KEY = 48611; // 5000th Prime
+const KEY = Date.now();
 
 ////////////////////////////////////////////////////////////////////////////////
 // Helper functions (return values used by main/configure on screen text)
 ////////////////////////////////////////////////////////////////////////////////
 
+// Inclusive on both boundaries.
 function nextRandInt(lower, upper) {
     return Math.floor(lower + Math.random() * (1 + upper - lower));
 }
@@ -20,9 +21,9 @@ function sleep(ms) {
 
 function getKey(val) {
     if (val) {
-        return nextRandInt(101, KEY)*KEY;
+        return nextRandInt(1, 1000)*KEY;
     } else {
-        return nextRandInt(101, KEY)*KEY + nextRandInt(1, KEY - 1);
+        return nextRandInt(1, 1000)*KEY + nextRandInt(1, KEY - 1);
     }
 }
 
@@ -79,11 +80,12 @@ function printInstruct(text) {
     instructions.innerHTML = text;
 }
 
-function makeButton(text, onClick, className = "", parent = "parent") {
+function makeButton(text, onClick, className = "", idName = "", parent = "parent") {
     let button = document.createElement("button");
     button.innerHTML = text;
     button.setAttribute("onClick", onClick);
     button.setAttribute("class", className);
+    button.setAttribute("id", idName)
     document.getElementById(parent).appendChild(button);
 }
 
@@ -104,7 +106,6 @@ function getBaseText(numSolved, questNum, attempts) {
 
 function questionSetup(numSolved, questNum, totAttempts) {
     let diff = nextRandInt(0, 45) + numSolved;
-    //diff = 60; // FOR TESTING ONLY
     let attempts = 0;
     
     nextQuestion(numSolved, questNum, diff, attempts, totAttempts);
@@ -162,7 +163,7 @@ function nextArithmetic(variation, baseText, numSolved, questNum, diff, attempts
         ansChoices.push(getCloseAns(ansChoices));
         ansChoices.push(getRandAns(ansChoices, 11, 300));
         
-        let question = baseText + "What is: " + a + " + " + b + "?";
+        let question = baseText + "What is: &emsp;" + a + " + " + b + "?";
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     } else if (variation == 1) { // 1-3 Digit subtration.
         let a = nextRandInt(1, 200);
@@ -175,7 +176,7 @@ function nextArithmetic(variation, baseText, numSolved, questNum, diff, attempts
         ansChoices.push(getCloseAns(ansChoices));
         ansChoices.push(getRandAns(ansChoices, 0, 199));
         
-        let question = baseText + "What is: " + a + " - " + b + "?";
+        let question = baseText + "What is: &emsp;" + a + " - " + b + "?";
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     } else { //1-2 Digit multiplication
         let a = nextRandInt(1, 30);
@@ -189,7 +190,7 @@ function nextArithmetic(variation, baseText, numSolved, questNum, diff, attempts
         ansChoices.push(getCloseAns(ansChoices));
         ansChoices.push(getRandAns(ansChoices, 1, 300));
         
-        let question = baseText + "What is: " + a + " * " + b + "?";
+        let question = baseText + "What is: &emsp;" + a + " * " + b + "?";
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     }
 }
@@ -211,7 +212,7 @@ function nextAlgebra(variation, baseText, numSolved, questNum, diff, attempts, t
         ansChoices.push(getRandAns(ansChoices, -20, 20));
         
         let operator = getOperator(b);
-        let question = baseText + "Solve for x: " + a + "(x" + operator + Math.abs(b) + ") = " + na;
+        let question = baseText + "Solve for x: &emsp;" + a + "(x" + operator + Math.abs(b) + ") = " + na + ".";
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     } else if (variation == 1) { // Evaluate x(ax + b) at x = c.
         let a = nextRandInt(-5, 5);
@@ -231,7 +232,7 @@ function nextAlgebra(variation, baseText, numSolved, questNum, diff, attempts, t
         ansChoices.push(getRandAns(ansChoices, -240, 240));
         
         let operator = getOperator(b);
-        let question = baseText + "Evaluate when x=" + c + ":    " + "x(" + a + "*x" + operator + Math.abs(b) + ")";
+        let question = baseText + "Evaluate when x=" + c + ": &emsp;" + "x(" + a + "*x" + operator + Math.abs(b) + ").";
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     } else { // What is the y-intercept / or slope: y = mx + b
         let m = getRandAns([0], -1000, 1000);
@@ -252,7 +253,7 @@ function nextAlgebra(variation, baseText, numSolved, questNum, diff, attempts, t
         ansChoices.push(getRandAns(ansChoices, -1000, 1000));
         
         let operator = getOperator(b);
-        let question = baseText + "What is the " + goal + " of:    y = " + m + "*x" + operator + Math.abs(b);
+        let question = baseText + "What is the " + goal + " of: &emsp;y = " + m + "*x" + operator + Math.abs(b) + "?";
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     }
 }
@@ -279,7 +280,7 @@ function nextGeometry(variation, baseText, numSolved, questNum, diff, attempts, 
             ansChoices.push(randAns + "(√3)");
         }
         
-        let question = baseText + "In a 30°-60°-90° triangle, the short leg has a length of " + a + ".<br>";
+        let question = baseText + "In a 30°-60°-90° triangle:<br>The short leg has a length of " + a + ".<br><br>";
         question += "What is the length of the " + goal + "?";
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     } else if (variation == 1) { // sin(x) in first quadrant
@@ -309,21 +310,20 @@ function nextGeometry(variation, baseText, numSolved, questNum, diff, attempts, 
             ansChoices.push(ansCoeffs[i] + 'π');
         }
     
-        let question = baseText + "What is the volume of a cylinder with radius = " + r + " and height = " + h + "?";
+        let question = baseText + "What is the volume of a cylinder with<br>radius = " + r + " and height = " + h + "?";
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     }
 }
 
-// Possibly rewrite one of the questions to be an integral.
-// Consider finding the derivative of a polynomial evaluated when x = a.
 function nextCalculus(variation, baseText, numSolved, questNum, diff, attempts, totAttempts) {
+    variation = 1 // TESTING ONLY
     if (variation == 0) { // What is the area under y = 2x from a to b.
         let a = nextRandInt(-10, 5);
         let b = nextRandInt(a, 10);
         let trueAns = b**2 - a**2;
         let addAns = b**2 + a**2;
         let orderAns = a**2 - b**2;
-        let integrateAns = 2*b - 2*a;
+        let integrateAns = 2*b - 2*a;   
         
         let ansChoices = [trueAns, addAns, orderAns, integrateAns];
         ansChoices.push(getCloseAns(ansChoices));
@@ -338,44 +338,49 @@ function nextCalculus(variation, baseText, numSolved, questNum, diff, attempts, 
         
         let question = baseText + "What is the area under y = 2x from x=" + a + " to x=" + b + "?";
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
-    } else if (variation == 1) { // Derivative of ±sin(ax) and cos(ax).
-        let a = nextRandInt(1, 100);
-        let trueCoeff = a;
+    } else if (variation == 1) { // Derivatives of common, non-polynomial functions.
+        const FUNCTIONS = ["e<sup>x</sup>", "sin(x)", "cos(x)", "ln(x)", "cosh(x)"];
+        let ans = ["e<sup>x</sup>", "cos(x)", "-sin(x)", "1 / x", "sinh(x)"];
+        let index = nextRandInt(0, 4);
+        let trueAns = ans.splice(index, 1);
         
-        const sinOrCos = ["sin(" + a + "x)", "cos(" + a + "x)"];
-        let index = 0;
-        if (nextRandBool()) {
-            index = 1;
-            trueCoeff *= -1;
+        let lastAns = ans.splice(nextRandInt(0, 3), 1);
+
+        if (trueAns == "sinh(x)") {
+            ans.splice(nextRandInt(0, 2), 1);
+            var ansChoices = [trueAns, "-sinh(x)", ans[0], ans[1], lastAns];
+        } else {
+            var ansChoices = [trueAns, ans[0], ans[1], ans[2], lastAns];
         }
-        let goal = sinOrCos[index];
-        if (nextRandBool()) {
-            goal = '-' + goal;
-            trueCoeff *= -1
-        }
         
-        let ansChoices = [trueCoeff + sinOrCos[1 - index]]
-        ansChoices.push(trueCoeff + sinOrCos[index]);
-        ansChoices.push(-1*trueCoeff + sinOrCos[1 - index]);
-        ansChoices.push(-1*trueCoeff + sinOrCos[index]);
-        ansChoices.push(getCloseAns([trueCoeff, -1*trueCoeff]) + sinOrCos[1 - index]);
+        let questFunc = FUNCTIONS[index];
+        questFunc += nextRandBool() ? "" : " + " + nextRandInt(1, 100);
         
-        let question = baseText + "What is the derivative (with respect to x) of " + goal + "?";
+        let question = baseText + "What is the derivative of: &emsp;f(x) = " + questFunc + "?";
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
-    } else { // What function(s) have the derivative f'(x) = ae^(ax) + bx + c?
-        let a = getRandAns([0], -10, 10);
-        let b = 2 * getRandAns([0], -25, 25);
-        let c = getRandAns([0], -100, 100);
+    } else { // Calculate f'(c), given f(x) = x^3 + ax + b?
+        let a = getRandAns([-1, 0, 1], -20, 20);
+        let b = 2 * getRandAns([0], -100, 100);
+        let c = getRandAns([0], -6, 6);
         
-        let trueAns = "e^(" + a + "x)" + getOperator(b) + Math.abs(b/2) + "x^2" + getOperator(c) + Math.abs(c) + "x + C";
-        let derivativeAns = a**2 + "e^(" + a + "x)" + getOperator(b) + Math.abs(b) + 'x';
-        let multAns = "e^(" + a + "x)" + getOperator(b) + Math.abs(2*b) + "x^2" + getOperator(c) + Math.abs(c) + "x + C";
-        let multSignAns = "e^(" + a + "x)" + getOperator(-1*b) + Math.abs(2*b) + "x^2" + getOperator(-1*c) + Math.abs(c) + "x + C";
-        let signAns = "e^(" + a + "x)" + getOperator(-1*b) + Math.abs(b/2) + "x^2" + getOperator(-1*c) + Math.abs(c) + "x + C";
+        let trueAns = 3 * c**2 + a;
+        let missedPrimeAns = c**3 + a*c + b;
+        let secondDerivAns = 6*c;
+
+        let ansChoices = [trueAns, missedPrimeAns, secondDerivAns];
+        ansChoices.push(getCloseAns(ansChoices));
+        ansChoices.push(getTensAns(ansChoices));
+
+        for (let i = 1; i < ansChoices.length - 1; i++) {
+            for (let j = 0; j < ansChoices.length; j++) {
+                if (j != i && ansChoices[i] == ansChoices[j]) {
+                    ansChoices[i] = getRandAns(ansChoices, -20, 100);
+                    break;
+                }
+            }
+        }
         
-        let ansChoices = [trueAns, derivativeAns, multAns, multSignAns, signAns];
-        let question = baseText + "What functions have the derivative f'(x) = ";
-        question += a + "e^(" + a + "x)" + getOperator(b) + Math.abs(b) + 'x' + getOperator(c) + Math.abs(c) + "?";
+        let question = baseText + "Calculate f'("+ c + "), given f(x) = x^3" + getOperator(a) + Math.abs(a) + "x" + getOperator(b) + Math.abs(b) + ".";
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     }
 }
@@ -419,7 +424,7 @@ function findStart() {
     }
 }
 
-function nextFree(text, numSolved) { // Finished.
+function nextFree(text, numSolved) {
     printInstruct(text + 'Click "Continue" when ready.');
     makeButton("Continue", "removeClass('contButton'); waitingRoom(" + (numSolved+1) + ");", "contButton");
 }
@@ -458,7 +463,7 @@ function getAnswer(promptText, ansChoices, numSolved, questNum, diff, attempts, 
 
 function waitingRoom(numSolved) {
     if (numSolved > 0) {
-        makeButton("Redo Previous", "removeClass('contButton'); waitingRoom(" + (numSolved-1) + ");", "contButton");
+        makeButton("Redo Previous", "removeClass('contButton'); waitingRoom(" + (numSolved-1) + ");", "contButton", "stopButton");
     }
     
     if (numSolved < MAP_NAMES.length - 1) {
@@ -466,7 +471,7 @@ function waitingRoom(numSolved) {
         makeButton("Continue", "removeClass('contButton'); questionSetup(" + numSolved + ",0,0);", "contButton");
     } else {
         printInstruct("Rule Completed!<br>Good luck in e02 :)");
-        makeButton("Reset", "removeClass('contButton'); resetNorm();", "contButton");
+        makeButton("Reset", "removeClass('contButton'); resetNorm();", "contButton", "stopButton");
     }
 }
 
@@ -485,7 +490,7 @@ function practiceRoom(numSolved, questNum, attempts, totAttempts) {
     totAttempts += attempts;
     printInstruct("You have solved " + questNum + " question(s) in " + totAttempts + " attempt(s).");
     makeButton("Continue", "removeClass('contButton'); questionSetup("+numSolved+","+(questNum+1)+","+totAttempts+");", "contButton");
-    makeButton("End Practice", "removeClass('contButton'); resetPractice();", "contButton", "end");
+    makeButton("End Practice", "removeClass('contButton'); resetPractice();", "contButton", "stopButton", "end");
 }
 
 function resetPractice() {
