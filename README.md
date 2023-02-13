@@ -1,5 +1,5 @@
 # The iJustine Challenge Math Problem Generator
-## The "Official" Helper for Rule TBD
+## The "Official" Resource for Rule TBD
 
 The text of rule TBD reads as follows:
 
