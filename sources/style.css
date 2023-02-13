@@ -19,9 +19,16 @@ a { color: red; }
 img { max-width: 100%;
     height: auto; }
     
-button { background-color: #ffebcd;
+button { background-color: blanchedalmond;
     width: 20%;
     font-size: 16px;
+    height: 26px;
+    margin: 3px;
+}
+
+button:hover { background-color: #00C800;
+    border: 2px solid red;
+    box-shadow: 0 0 30px 5px blanchedalmond;
 }
 
 .begin { width: 25%; }
@@ -29,6 +36,10 @@ button { background-color: #ffebcd;
 .ansButton { text-align: left;
     width: 30%; }
 .practButton { width: 30%; }
+
+#stopButton:hover { background-color: red;
+    border: 2px dashed black;
+}
 
 .column {
     float: left;
