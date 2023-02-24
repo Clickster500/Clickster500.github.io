@@ -74,7 +74,7 @@ function printInstruct(text) {
     let instructions = document.getElementById("instructions");
     if (!instructions) {
         instructions = document.createElement('p');
-        instructions.setAttribute("id", "instructions")
+        instructions.setAttribute("id", "instructions");
         document.getElementById("parent").appendChild(instructions);
     }
     instructions.innerHTML = text;
@@ -385,14 +385,43 @@ function nextCalculus(variation, baseText, numSolved, questNum, diff, attempts, 
     }
 }
 
-function choice(numSolved, questNum, diff, attempts, totAttempts, keyVal) {
+function choice(numSolved, questNum, diff, attempts, totAttempts, indexSelected) {
     attempts++;
-    removeClass("ansButton");
+
+    let elems = document.getElementsByClassName("ansButton");
+    for (let i = 0; i < elems.length; i++) {
+        elems[i].setAttribute("disabled", true);
+
+        let keyVal = elems[i].getAttribute("id");
+        if (keyVal % KEY == 0) {
+            elems[i].setAttribute("id", "correctAnswer");
+            var wasCorrect = (i == indexSelected);
+        } else if (i == indexSelected) {
+            elems[i].setAttribute("id", "wrongAnswer");
+        }
+    }
+
+    return;
+
+    if (!wasCorrect) {
+        bottomText = document.createElement('p');
+        instructions.setAttribute("class", "ansButton");
+        document.getElementById("end").appendChild(bottomText);
+        instructions.innerHTML = "INCORRECT. Try again when ready.";
+
+        makeButton("Try again.", "removeClass('ansButton'); nextQuestion("+numSolved+","+questNum+","+diff-1+","+attempts+","+totAttempts+");", "contButton", "", "end")
+    }
+
+
+
+
+
+
     if (keyVal % KEY) {
         nextQuestion(numSolved, questNum, diff - 1, attempts, totAttempts);
         return;
     }
-    if (numSolved < 0) { // Practice.
+    if (numSolved < 0) { // Practice
         practiceRoom(numSolved, questNum, attempts, totAttempts);
     } else { // Standard
         waitingRoom(numSolved + 1);
@@ -443,9 +472,9 @@ function getAnswer(promptText, ansChoices, numSolved, questNum, diff, attempts, 
         
         if (index == 0 && !isAnsFound) {
             isAnsFound = true;
-            makeButton(ANSWER_KEY[i] + ". " + ansChoices[index], "choice("+numSolved+","+questNum+","+diff+","+attempts+","+totAttempts+","+getKey(1)+");", "ansButton");
+            makeButton(ANSWER_KEY[i] + ". " + ansChoices[index], "choice("+numSolved+","+questNum+","+diff+","+attempts+","+totAttempts+","+i+");", "ansButton", getKey(1));
         } else {
-            makeButton(ANSWER_KEY[i] + ". " + ansChoices[index], "choice("+numSolved+","+questNum+","+diff+","+attempts+","+totAttempts+","+getKey(0)+");", "ansButton");
+            makeButton(ANSWER_KEY[i] + ". " + ansChoices[index], "choice("+numSolved+","+questNum+","+diff+","+attempts+","+totAttempts+","+i+");", "ansButton", getKey(0));
         }
         
         ansChoices.splice(index, 1);
@@ -455,9 +484,9 @@ function getAnswer(promptText, ansChoices, numSolved, questNum, diff, attempts, 
     }
     
     if (ansChoices.length == 0) {
-        makeButton("E. None of the above", "choice("+numSolved+","+questNum+","+diff+","+attempts+","+totAttempts+","+getKey(1)+");", "ansButton");
+        makeButton("E. None of the above", "choice("+numSolved+","+questNum+","+diff+","+attempts+","+totAttempts+",4);", "ansButton", getKey(1));
     } else {
-        makeButton("E. None of the above", "choice("+numSolved+","+questNum+","+diff+","+attempts+","+totAttempts+","+getKey(0)+");", "ansButton");
+        makeButton("E. None of the above", "choice("+numSolved+","+questNum+","+diff+","+attempts+","+totAttempts+",4);", "ansButton", getKey(0));
     }
 }
 

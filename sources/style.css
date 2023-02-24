@@ -26,20 +26,28 @@ button { background-color: blanchedalmond;
     margin: 3px;
 }
 
-button:hover { background-color: #00C800;
+button:hover:not(:disabled) { background-color: #00C800;
     border: 2px solid red;
-    box-shadow: 0 0 30px 5px blanchedalmond;
-}
+    box-shadow: 0 0 30px 5px blanchedalmond; }
+
+button:disabled { cursor: not-allowed;
+    background-color: blanchedalmond;
+    color: black; }
 
 .begin { width: 25%; }
 .findStart { width: 12%; }
+.practButton { width: 30%; }
 .ansButton { text-align: left;
     width: 30%; }
-.practButton { width: 30%; }
 
 #stopButton:hover { background-color: red;
-    border: 2px dashed black;
-}
+    border: 2px dashed black; }
+
+#correctAnswer { background-color: #00C800;
+    border: 2px solid red; }
+
+#wrongAnswer { background-color: red;
+    border: 2px dashed black; }
 
 .column {
     float: left;
