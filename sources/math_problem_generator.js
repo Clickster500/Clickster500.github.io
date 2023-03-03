@@ -57,10 +57,10 @@ function getRandAns(allAns, lower, upper) {
     return rand;
 }
 
-function addLineBreak(className) {
+function addLineBreak(className, parent = "parent") {
     let lineBreak = document.createElement("br");
     lineBreak.setAttribute("class", className);
-    document.getElementById("parent").appendChild(lineBreak);
+    document.getElementById(parent).appendChild(lineBreak);
 }
 
 function removeClass(className) {
@@ -80,23 +80,28 @@ function printInstruct(text) {
     instructions.innerHTML = text;
 }
 
+function makeText(text, className = "", idName = "", parent = "parent") {
+    let elem = document.createElement('p');
+    elem.innerHTML = text;
+    elem.setAttribute("class", className);
+    elem.setAttribute("id", idName);
+    document.getElementById(parent).appendChild(elem);
+}
+
 function makeButton(text, onClick, className = "", idName = "", parent = "parent") {
     let button = document.createElement("button");
     button.innerHTML = text;
     button.setAttribute("onClick", onClick);
     button.setAttribute("class", className);
-    button.setAttribute("id", idName)
+    button.setAttribute("id", idName);
     document.getElementById(parent).appendChild(button);
 }
 
 function getBaseText(numSolved, questNum, attempts) {
     let baseText = questNum != 0 
-        ? "<div align='left'>Question: " + questNum + "</div>"
-        : "<div align='left'>Now leaving: " + MAP_NAMES[numSolved] + "</div>"
-        + "<div align='left'>Next level:  " + MAP_NAMES[numSolved + 1] + "</div>";
-    if (attempts >= 1) {
-        baseText = "INCORRECT" + baseText;
-    }
+        ? `<div align='left'>Question: ${questNum}</div>`
+        : `<div align='left'>Now leaving: ${MAP_NAMES[numSolved]}</div>`
+        + `<div align='left'>Next level:  ${MAP_NAMES[numSolved + 1]}</div>`;
     return baseText;
 }
 
@@ -163,7 +168,7 @@ function nextArithmetic(variation, baseText, numSolved, questNum, diff, attempts
         ansChoices.push(getCloseAns(ansChoices));
         ansChoices.push(getRandAns(ansChoices, 11, 300));
         
-        let question = baseText + "What is: &emsp;" + a + " + " + b + "?";
+        let question = baseText + `What is: &emsp; ${a} + ${b}?`;
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     } else if (variation == 1) { // 1-3 Digit subtration.
         let a = nextRandInt(1, 200);
@@ -176,7 +181,7 @@ function nextArithmetic(variation, baseText, numSolved, questNum, diff, attempts
         ansChoices.push(getCloseAns(ansChoices));
         ansChoices.push(getRandAns(ansChoices, 0, 199));
         
-        let question = baseText + "What is: &emsp;" + a + " - " + b + "?";
+        let question = baseText + `What is: &emsp; ${a} - ${b}?`;
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     } else { //1-2 Digit multiplication
         let a = nextRandInt(1, 30);
@@ -190,7 +195,7 @@ function nextArithmetic(variation, baseText, numSolved, questNum, diff, attempts
         ansChoices.push(getCloseAns(ansChoices));
         ansChoices.push(getRandAns(ansChoices, 1, 300));
         
-        let question = baseText + "What is: &emsp;" + a + " * " + b + "?";
+        let question = baseText + `What is: &emsp; ${a} * ${b}?`;
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     }
 }
@@ -211,8 +216,7 @@ function nextAlgebra(variation, baseText, numSolved, questNum, diff, attempts, t
         ansChoices.push(getCloseAns(ansChoices, trueAns));
         ansChoices.push(getRandAns(ansChoices, -20, 20));
         
-        let operator = getOperator(b);
-        let question = baseText + "Solve for x: &emsp;" + a + "(x" + operator + Math.abs(b) + ") = " + na + ".";
+        let question = baseText + `Solve for x: &emsp; ${a}(x ${getOperator(b)} ${Math.abs(b)}) = ${na}.`;
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     } else if (variation == 1) { // Evaluate x(ax + b) at x = c.
         let a = nextRandInt(-5, 5);
@@ -231,8 +235,7 @@ function nextAlgebra(variation, baseText, numSolved, questNum, diff, attempts, t
         let ansChoices = [trueAns, signAns1, signAns2, signAns3];
         ansChoices.push(getRandAns(ansChoices, -240, 240));
         
-        let operator = getOperator(b);
-        let question = baseText + "Evaluate when x=" + c + ": &emsp;" + "x(" + a + "*x" + operator + Math.abs(b) + ").";
+        let question = baseText + `Evaluate when x=${c}: &emsp; x(${a}x ${getOperator(b)} ${Math.abs(b)}).`;
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     } else { // What is the y-intercept / or slope: y = mx + b
         let m = getRandAns([0], -1000, 1000);
@@ -252,8 +255,7 @@ function nextAlgebra(variation, baseText, numSolved, questNum, diff, attempts, t
         ansChoices.push(-1*b);
         ansChoices.push(getRandAns(ansChoices, -1000, 1000));
         
-        let operator = getOperator(b);
-        let question = baseText + "What is the " + goal + " of: &emsp;y = " + m + "*x" + operator + Math.abs(b) + "?";
+        let question = baseText + `What is the ${goal} of: &emsp;y = ${m}x ${getOperator(b)} ${Math.abs(b)}?`;
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     }
 }
@@ -269,7 +271,7 @@ function nextGeometry(variation, baseText, numSolved, questNum, diff, attempts, 
             goal = "hypotenuse";
         } else {
             ansChoices.push(a+"(√3)", 2*a);
-            goal = "long leg"
+            goal = "long leg";
         }
         
         ansChoices.push(a/2, a+" / (√3)");
@@ -292,7 +294,7 @@ function nextGeometry(variation, baseText, numSolved, questNum, diff, attempts, 
         let lastAns = ans.splice(nextRandInt(0, 3), 1);
         let ansChoices = [trueAns, ans[0], ans[1], ans[2], lastAns];
         
-        let question = baseText + "What is sin(" + ANGLES[index] + ")?";
+        let question = baseText + `What is sin(${ANGLES[index]})?`;
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     } else { // Volume of a cylinder, V = pi r^2 h
         let r = getRandAns([2], 1, 6);
@@ -310,13 +312,12 @@ function nextGeometry(variation, baseText, numSolved, questNum, diff, attempts, 
             ansChoices.push(ansCoeffs[i] + 'π');
         }
     
-        let question = baseText + "What is the volume of a cylinder with<br>radius = " + r + " and height = " + h + "?";
+        let question = baseText + `What is the volume of a cylinder with<br>radius = ${r} and height = ${h}?`;
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     }
 }
 
 function nextCalculus(variation, baseText, numSolved, questNum, diff, attempts, totAttempts) {
-    variation = 1 // TESTING ONLY
     if (variation == 0) { // What is the area under y = 2x from a to b.
         let a = nextRandInt(-10, 5);
         let b = nextRandInt(a, 10);
@@ -336,7 +337,7 @@ function nextCalculus(variation, baseText, numSolved, questNum, diff, attempts, 
             }
         }
         
-        let question = baseText + "What is the area under y = 2x from x=" + a + " to x=" + b + "?";
+        let question = baseText + `What is the area under y = 2x from x=${a} to x=${b}?`;
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     } else if (variation == 1) { // Derivatives of common, non-polynomial functions.
         const FUNCTIONS = ["e<sup>x</sup>", "sin(x)", "cos(x)", "ln(x)", "cosh(x)"];
@@ -380,16 +381,25 @@ function nextCalculus(variation, baseText, numSolved, questNum, diff, attempts, 
             }
         }
         
-        let question = baseText + "Calculate f'("+ c + "), given f(x) = x^3" + getOperator(a) + Math.abs(a) + "x" + getOperator(b) + Math.abs(b) + ".";
+        let question = baseText + `Calculate f'(${c}), given f(x) = x<sup>3</sup> ${getOperator(a)} ${Math.abs(a)} x ${getOperator(b)} ${Math.abs(b)}.`;
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     }
 }
 
+////////////////////////////////////////////////////////////////////////////////
+// Main functions (triggered by button push, end with generating a new button)
+////////////////////////////////////////////////////////////////////////////////
+
 function choice(numSolved, questNum, diff, attempts, totAttempts, indexSelected) {
+    indexSelected += Math.trunc(indexSelected / 2);
     attempts++;
 
     let elems = document.getElementsByClassName("ansButton");
     for (let i = 0; i < elems.length; i++) {
+        if (elems[i].nodeName != "BUTTON") {
+            continue;
+        }
+
         elems[i].setAttribute("disabled", true);
 
         let keyVal = elems[i].getAttribute("id");
@@ -401,36 +411,18 @@ function choice(numSolved, questNum, diff, attempts, totAttempts, indexSelected)
         }
     }
 
-    return;
-
-    if (!wasCorrect) {
-        bottomText = document.createElement('p');
-        instructions.setAttribute("class", "ansButton");
-        document.getElementById("end").appendChild(bottomText);
-        instructions.innerHTML = "INCORRECT. Try again when ready.";
-
-        makeButton("Try again.", "removeClass('ansButton'); nextQuestion("+numSolved+","+questNum+","+diff-1+","+attempts+","+totAttempts+");", "contButton", "", "end")
-    }
-
-
-
-
-
-
-    if (keyVal % KEY) {
-        nextQuestion(numSolved, questNum, diff - 1, attempts, totAttempts);
-        return;
-    }
-    if (numSolved < 0) { // Practice
-        practiceRoom(numSolved, questNum, attempts, totAttempts);
-    } else { // Standard
-        waitingRoom(numSolved + 1);
+    if (!wasCorrect) { // Incorrect
+        makeText(`INCORRECT. Your delay is ${attempts * 0.5} second(s).`, "contButton", "", "end");
+        makeButton("Try again", `nextQuestion(${numSolved}, ${questNum}, ${diff-1}, ${attempts}, ${totAttempts}); removeClass('ansButton'); removeClass('contButton');`, "contButton", "", "end")
+    } else if (numSolved < 0) { // Correct, Practice.
+        totAttempts += attempts;
+        makeText(`You have solved ${questNum} question(s) in ${totAttempts} attempt(s).`, "contButton", "", "end");
+        makeButton("End Practice", "removeClass('contButton'); removeClass('ansButton'); resetPractice();", "contButton", "stopButton", "end");
+        makeButton("Continue", `removeClass('contButton'); removeClass('ansButton'); questionSetup(${numSolved}, ${questNum+1}, ${totAttempts});`, "contButton", "", "end");
+    } else {
+        correctAnswer(numSolved);
     }
 }
-
-////////////////////////////////////////////////////////////////////////////////
-// Main functions (triggered by button push, end with generating a new button)
-////////////////////////////////////////////////////////////////////////////////
 
 function begin(numSolved = 0) {
     removeClass("begin");
@@ -454,8 +446,8 @@ function findStart() {
 }
 
 function nextFree(text, numSolved) {
-    printInstruct(text + 'Click "Continue" when ready.');
-    makeButton("Continue", "removeClass('contButton'); waitingRoom(" + (numSolved+1) + ");", "contButton");
+    printInstruct(text);
+    correctAnswer(numSolved);
 }
 
 function getAnswer(promptText, ansChoices, numSolved, questNum, diff, attempts, totAttempts) {
@@ -472,9 +464,9 @@ function getAnswer(promptText, ansChoices, numSolved, questNum, diff, attempts, 
         
         if (index == 0 && !isAnsFound) {
             isAnsFound = true;
-            makeButton(ANSWER_KEY[i] + ". " + ansChoices[index], "choice("+numSolved+","+questNum+","+diff+","+attempts+","+totAttempts+","+i+");", "ansButton", getKey(1));
+            makeButton(ANSWER_KEY[i] + ". " + ansChoices[index], `choice(${numSolved}, ${questNum}, ${diff}, ${attempts}, ${totAttempts}, ${i});`, "ansButton", getKey(1));
         } else {
-            makeButton(ANSWER_KEY[i] + ". " + ansChoices[index], "choice("+numSolved+","+questNum+","+diff+","+attempts+","+totAttempts+","+i+");", "ansButton", getKey(0));
+            makeButton(ANSWER_KEY[i] + ". " + ansChoices[index], `choice(${numSolved}, ${questNum}, ${diff}, ${attempts}, ${totAttempts}, ${i});`, "ansButton", getKey(0));
         }
         
         ansChoices.splice(index, 1);
@@ -484,24 +476,38 @@ function getAnswer(promptText, ansChoices, numSolved, questNum, diff, attempts, 
     }
     
     if (ansChoices.length == 0) {
-        makeButton("E. None of the above", "choice("+numSolved+","+questNum+","+diff+","+attempts+","+totAttempts+",4);", "ansButton", getKey(1));
+        makeButton("E. None of the above", `choice(${numSolved}, ${questNum}, ${diff}, ${attempts}, ${totAttempts}, 4);`, "ansButton", getKey(1));
     } else {
-        makeButton("E. None of the above", "choice("+numSolved+","+questNum+","+diff+","+attempts+","+totAttempts+",4);", "ansButton", getKey(0));
+        makeButton("E. None of the above", `choice(${numSolved}, ${questNum}, ${diff}, ${attempts}, ${totAttempts}, 4);`, "ansButton", getKey(0));
     }
 }
 
-function waitingRoom(numSolved) {
+function correctAnswer(numSolved) {
+    numSolved += 1;
+    makeText("", "contButton", "bottomText", "end");
+    bottomText = document.getElementById("bottomText");
+
     if (numSolved > 0) {
-        makeButton("Redo Previous", "removeClass('contButton'); waitingRoom(" + (numSolved-1) + ");", "contButton", "stopButton");
+        makeButton("Redo Previous", `removeClass('contButton'); removeClass('ansButton'); redoPrevious(${numSolved-1});`, "contButton", "stopButton", "end");
     }
     
     if (numSolved < MAP_NAMES.length - 1) {
-        printInstruct("CORRECT!<br>" + "You are currently in: " + MAP_NAMES[numSolved] + '<br>Click "Continue" for the next problem.');
-        makeButton("Continue", "removeClass('contButton'); questionSetup(" + numSolved + ",0,0);", "contButton");
+        bottomText.innerHTML = `CORRECT!<br>You are currently in: ${MAP_NAMES[numSolved]}<br>Click "Continue" for the next problem.`;
+        console.log(numSolved, MAP_NAMES.length)
+        makeButton("Continue", `removeClass('contButton'); removeClass('ansButton'); questionSetup(${numSolved}, 0, 0);`, "contButton", "", "end");
     } else {
-        printInstruct("Rule Completed!<br>Good luck in e02 :)");
-        makeButton("Reset", "removeClass('contButton'); resetNorm();", "contButton", "stopButton");
+        bottomText.innerHTML = "Rule Completed!<br>Good luck in e02 :)";
+        makeButton("Reset", "removeClass('contButton'); removeClass('ansButton'); resetNorm();", "contButton", "stopButton", "end");
     }
+}
+
+function redoPrevious(numSolved) {
+    if (numSolved > 0) {
+        makeButton("Redo Previous", "removeClass('contButton'); redoPrevious(" + (numSolved-1) + ");", "contButton", "stopButton");
+    }
+
+    printInstruct(`You are currently in: ${MAP_NAMES[numSolved]}<br>Click "Continue" for the next problem.`);
+    makeButton("Continue", `removeClass('contButton'); questionSetup(${numSolved}, 0, 0);`, "contButton");
 }
 
 function resetNorm() {
@@ -513,13 +519,6 @@ function resetNorm() {
 function practice(typeVal) {
     let questNum = 1;
     questionSetup(-1*typeVal, questNum, 0);
-}
-
-function practiceRoom(numSolved, questNum, attempts, totAttempts) {
-    totAttempts += attempts;
-    printInstruct("You have solved " + questNum + " question(s) in " + totAttempts + " attempt(s).");
-    makeButton("Continue", "removeClass('contButton'); questionSetup("+numSolved+","+(questNum+1)+","+totAttempts+");", "contButton");
-    makeButton("End Practice", "removeClass('contButton'); resetPractice();", "contButton", "stopButton", "end");
 }
 
 function resetPractice() {
