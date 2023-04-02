@@ -134,7 +134,7 @@ async function nextQuestion(numSolved, questNum, diff, attempts, totAttempts) {
     await sleep(attempts * 500);
     
     let variation = nextRandInt(0, 2);
-    if (diff < numSolved + 5) {
+    if (diff < 5 || (attempts == 0 && diff < numSolved + 5)) {
         baseText += "<div align='left'>Category: FREE PASS</div><br>";
         nextFree(baseText, numSolved);
     } else if (diff < 20) {
@@ -484,26 +484,31 @@ function getAnswer(promptText, ansChoices, numSolved, questNum, diff, attempts, 
 
 function correctAnswer(numSolved) {
     numSolved += 1;
-    makeText("", "contButton", "bottomText", "end");
-    bottomText = document.getElementById("bottomText");
+    makeText("", "contButton", "centeredText", "end");
+    centeredText = document.getElementById("centeredText");
+    makeText("", "contButton", "leftText", "end");
+    leftText = document.getElementById("leftText");
 
     if (numSolved > 0) {
         makeButton("Redo Previous", `removeClass('contButton'); removeClass('ansButton'); redoPrevious(${numSolved-1});`, "contButton", "stopButton", "end");
     }
     
     if (numSolved < MAP_NAMES.length - 1) {
-        bottomText.innerHTML = `CORRECT!<br>You are currently in: ${MAP_NAMES[numSolved]}<br>Click "Continue" for the next problem.`;
+        centeredText.innerHTML = "CORRECT!";
+        leftText.innerHTML = `You are currently in: &emsp;${MAP_NAMES[numSolved]}<br>`
+        leftText.innerHTML += `Your Rule 7 number is:&emsp;${nextRandInt(0, 10)}<br>`;
+        leftText.innerHTML += 'Click "Continue" for the next problem.';
         console.log(numSolved, MAP_NAMES.length)
         makeButton("Continue", `removeClass('contButton'); removeClass('ansButton'); questionSetup(${numSolved}, 0, 0);`, "contButton", "", "end");
     } else {
-        bottomText.innerHTML = "Rule Completed!<br>Good luck in e02 :)";
+        centeredText.innerHTML = `Rule Completed!<br>Your final Rule 7 number is:&emsp;${nextRandInt(0, 10)}<br>Good luck in e02 :)`;
         makeButton("Reset", "removeClass('contButton'); removeClass('ansButton'); resetNorm();", "contButton", "stopButton", "end");
     }
 }
 
 function redoPrevious(numSolved) {
     if (numSolved > 0) {
-        makeButton("Redo Previous", "removeClass('contButton'); redoPrevious(" + (numSolved-1) + ");", "contButton", "stopButton");
+        makeButton("Redo Previous", `removeClass('contButton'); redoPrevious(${numSolved-1});`, "contButton", "stopButton");
     }
 
     printInstruct(`You are currently in: ${MAP_NAMES[numSolved]}<br>Click "Continue" for the next problem.`);
@@ -525,7 +530,7 @@ function resetPractice() {
     document.getElementById("instructions").remove();
     let catNames = ["Arithmetic", "Algebra I", "Geometry or Basic Trig", "Basic Calculus"];
     for (let i = 0; i < catNames.length; i++) {
-        makeButton(catNames[i], "removeClass('practButton'); practice("+(i+1)+");", "practButton");
+        makeButton(catNames[i], `removeClass('practButton'); practice(${i+1});`, "practButton");
         if (i == 1) {
             addLineBreak("practButton");
         }

@@ -49,6 +49,13 @@ button:disabled { cursor: not-allowed;
 #wrongAnswer { background-color: red;
     border: 2px dashed black; }
 
+#centeredText { margin-top: 0;
+    margin-bottom: 5px; }
+#leftText { margin-top: 5px;
+    text-align: left;
+    padding-left: 131px;
+}
+
 .column {
     float: left;
     width: 30%;
