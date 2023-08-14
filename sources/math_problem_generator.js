@@ -57,6 +57,17 @@ function getRandAns(allAns, lower, upper) {
     return rand;
 }
 
+function verifyAnswers(allAns, lower, upper) {
+    for (let i = 1; i < allAns.length; i++) {
+        for (let j = 0; j < i; j++) {
+            if (allAns[i] == allAns[j]) {
+                allAns[i] = getRandAns(allAns, lower, upper);
+            }
+        }
+    }
+    return allAns;
+}
+
 function addLineBreak(className, parent = "parent") {
     let lineBreak = document.createElement("br");
     lineBreak.setAttribute("class", className);
@@ -154,6 +165,9 @@ async function nextQuestion(numSolved, questNum, diff, attempts, totAttempts) {
 
 function nextArithmetic(variation, baseText, numSolved, questNum, diff, attempts, totAttempts) {
     if (variation == 0) { // 1-3 Digit addition.
+        let lowerBound = 11;
+        let upperBound = 300;
+
         let a = nextRandInt(1, 100);
         let b = nextRandInt(10, 200);
         let trueAns = a + b;
@@ -166,11 +180,15 @@ function nextArithmetic(variation, baseText, numSolved, questNum, diff, attempts
         
         let ansChoices = [trueAns, multAns, subtrAns];
         ansChoices.push(getCloseAns(ansChoices));
-        ansChoices.push(getRandAns(ansChoices, 11, 300));
-        
+        ansChoices.push(getRandAns(ansChoices, lowerBound, upperBound));
+
+        ansChoices = verifyAnswers(ansChoices, lowerBound, upperBound);
         let question = baseText + `What is: &emsp; ${a} + ${b}?`;
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     } else if (variation == 1) { // 1-3 Digit subtration.
+        let lowerBound = 0;
+        let upperBound = 199;
+
         let a = nextRandInt(1, 200);
         let b = nextRandInt(1, a);
         let trueAns = a - b;
@@ -179,11 +197,15 @@ function nextArithmetic(variation, baseText, numSolved, questNum, diff, attempts
         let ansChoices = [trueAns, addAns];
         ansChoices.push(getTensAns(ansChoices));
         ansChoices.push(getCloseAns(ansChoices));
-        ansChoices.push(getRandAns(ansChoices, 0, 199));
-        
+        ansChoices.push(getRandAns(ansChoices, lowerBound, upperBound));
+
+        ansChoices = verifyAnswers(ansChoices, lowerBound, upperBound);
         let question = baseText + `What is: &emsp; ${a} - ${b}?`;
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     } else { //1-2 Digit multiplication
+        let lowerBound = 1;
+        let upperBound = 300;
+
         let a = nextRandInt(1, 30);
         let b = nextRandInt(1, 10);
         let trueAns = a * b;
@@ -193,32 +215,39 @@ function nextArithmetic(variation, baseText, numSolved, questNum, diff, attempts
         
         let ansChoices = [trueAns, addAns, subtrAns];
         ansChoices.push(getCloseAns(ansChoices));
-        ansChoices.push(getRandAns(ansChoices, 1, 300));
+        ansChoices.push(getRandAns(ansChoices, lowerBound, upperBound));
         
+        ansChoices = verifyAnswers(ansChoices, lowerBound, upperBound);
         let question = baseText + `What is: &emsp; ${a} * ${b}?`;
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     }
 }
 
 function nextAlgebra(variation, baseText, numSolved, questNum, diff, attempts, totAttempts) {
+    variation = 1 // TESTING ONLY REMOVE.
     if (variation == 0) { // a(x + b) = n*a
+        let lowerBound = -20;
+        let upperBound = 20;
+
         let a = nextRandInt(1, 10);
         let na = a * getRandAns([0], -10, 10); // n cannot be 0
-        let b = 0;
-        while (b == 0 || (na/a*-1 - b) == (na/a - b)) {
-            b = nextRandInt(-10, 10);
-        }
+        let b = getRandAns([0, na/a], -10, 10);
+
         let trueAns = na / a - b;
         let signAns1 = na / a * (-1) - b;
         let signAns2 = na / a + b;
         
         let ansChoices = [trueAns, signAns1, signAns2];
         ansChoices.push(getCloseAns(ansChoices, trueAns));
-        ansChoices.push(getRandAns(ansChoices, -20, 20));
+        ansChoices.push(getRandAns(ansChoices, lowerBound, upperBound));
         
+        ansChoices = verifyAnswers(ansChoices, lowerBound, upperBound);
         let question = baseText + `Solve for x: &emsp; ${a}(x ${getOperator(b)} ${Math.abs(b)}) = ${na}.`;
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     } else if (variation == 1) { // Evaluate x(ax + b) at x = c.
+        let lowerBound = -240;
+        let upperBound = 240;
+
         let a = nextRandInt(-5, 5);
         let b = getRandAns([0], -10, 10); // b cannot be 0.
         let c = nextRandInt(0, 6);
@@ -228,16 +257,20 @@ function nextAlgebra(variation, baseText, numSolved, questNum, diff, attempts, t
         let signAns3 = -1*signAns1;
         if (c == 0 || a == 0) {
             signAns1 = -1*b;
-            signAns2 = getRandAns([trueAns, signAns1], -240, 240);
-            signAns3 = getRandAns([trueAns, signAns1, signAns2], -240, 240);
+            signAns2 = getRandAns([trueAns, signAns1], lowerBound, upperBound);
+            signAns3 = getRandAns([trueAns, signAns1, signAns2], lowerBound, upperBound);
         }
         
         let ansChoices = [trueAns, signAns1, signAns2, signAns3];
         ansChoices.push(getRandAns(ansChoices, -240, 240));
         
+        ansChoices = verifyAnswers(ansChoices, lowerBound, upperBound);
         let question = baseText + `Evaluate when x=${c}: &emsp; x(${a}x ${getOperator(b)} ${Math.abs(b)}).`;
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     } else { // What is the y-intercept / or slope: y = mx + b
+        let lowerBound = -1000;
+        let upperBound = 1000;
+
         let m = getRandAns([0], -1000, 1000);
         let b = getRandAns([0, m, -1*m], -1000, 1000);
         
@@ -253,8 +286,9 @@ function nextAlgebra(variation, baseText, numSolved, questNum, diff, attempts, t
         
         ansChoices.push(-1*m);
         ansChoices.push(-1*b);
-        ansChoices.push(getRandAns(ansChoices, -1000, 1000));
+        ansChoices.push(getRandAns(ansChoices, lowerBound, upperBound));
         
+        ansChoices = verifyAnswers(ansChoices, lowerBound, upperBound);
         let question = baseText + `What is the ${goal} of: &emsp;y = ${m}x ${getOperator(b)} ${Math.abs(b)}?`;
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     }
@@ -262,6 +296,9 @@ function nextAlgebra(variation, baseText, numSolved, questNum, diff, attempts, t
 
 function nextGeometry(variation, baseText, numSolved, questNum, diff, attempts, totAttempts) {
     if (variation == 0) { // 30°-60°-90° triangle. Find length b or c given a
+        let lowerBound = 1;
+        let upperBound = 200;
+
         let a = 2 * nextRandInt(1, 100);
         
         let ansChoices = [];
@@ -275,13 +312,15 @@ function nextGeometry(variation, baseText, numSolved, questNum, diff, attempts, 
         }
         
         ansChoices.push(a/2, a+" / (√3)");
-        let randAns = getRandAns([a, 2*a, a/2], 1, 200);
+        let randAns = getRandAns([a, 2*a, a/2], lowerBound, upperBound);
         if (nextRandBool()) { 
             ansChoices.push(randAns);
         } else {
             ansChoices.push(randAns + "(√3)");
         }
         
+        // Cannot verify answers, since some involve text.
+        // This problem has been thoroughly tested again to ensure accuracy.
         let question = baseText + "In a 30°-60°-90° triangle:<br>The short leg has a length of " + a + ".<br><br>";
         question += "What is the length of the " + goal + "?";
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
@@ -294,9 +333,14 @@ function nextGeometry(variation, baseText, numSolved, questNum, diff, attempts, 
         let lastAns = ans.splice(nextRandInt(0, 3), 1);
         let ansChoices = [trueAns, ans[0], ans[1], ans[2], lastAns];
         
+        // Cannot verify answers as in other problems.
+        // Answer pool is entirely predetermined and cannot possibly duplicate.
         let question = baseText + `What is sin(${ANGLES[index]})?`;
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     } else { // Volume of a cylinder, V = pi r^2 h
+        let lowerBound = 1;
+        let upperBound = 360;
+
         let r = getRandAns([2], 1, 6);
         let h = getRandAns([r, 2], 1, 10);
         let trueCoeff = r**2 * h;
@@ -305,13 +349,14 @@ function nextGeometry(variation, baseText, numSolved, questNum, diff, attempts, 
         
         let ansCoeffs = [trueCoeff, circumCoeff, heightCoeff];
         ansCoeffs.push(getCloseAns(ansCoeffs));
-        ansCoeffs.push(getRandAns(ansCoeffs, 1, 360));
+        ansCoeffs.push(getRandAns(ansCoeffs, lowerBound, upperBound));
         
         let ansChoices = []
         for (let i = 0; i < ansCoeffs.length; i++) {
             ansChoices.push(ansCoeffs[i] + 'π');
         }
-    
+        
+        ansChoices = verifyAnswers(ansChoices, lowerBound, upperBound);
         let question = baseText + `What is the volume of a cylinder with<br>radius = ${r} and height = ${h}?`;
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     }
@@ -319,6 +364,9 @@ function nextGeometry(variation, baseText, numSolved, questNum, diff, attempts, 
 
 function nextCalculus(variation, baseText, numSolved, questNum, diff, attempts, totAttempts) {
     if (variation == 0) { // What is the area under y = 2x from a to b.
+        let lowerBound = -100;
+        let upperBound = 100;
+        
         let a = nextRandInt(-10, 5);
         let b = nextRandInt(a, 10);
         let trueAns = b**2 - a**2;
@@ -328,15 +376,8 @@ function nextCalculus(variation, baseText, numSolved, questNum, diff, attempts, 
         
         let ansChoices = [trueAns, addAns, orderAns, integrateAns];
         ansChoices.push(getCloseAns(ansChoices));
-        for (let i = 1; i < ansChoices.length - 1; i++) {
-            for (let j = 0; j < ansChoices.length; j++) {
-                if (j != i && ansChoices[i] == ansChoices[j]) {
-                    ansChoices[i] = getRandAns(ansChoices, -100, 100);
-                    break;
-                }
-            }
-        }
         
+        ansChoices = verifyAnswers(ansChoices, lowerBound, upperBound);
         let question = baseText + `What is the area under y = 2x from x=${a} to x=${b}?`;
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     } else if (variation == 1) { // Derivatives of common, non-polynomial functions.
@@ -357,9 +398,14 @@ function nextCalculus(variation, baseText, numSolved, questNum, diff, attempts, 
         let questFunc = FUNCTIONS[index];
         questFunc += nextRandBool() ? "" : " + " + nextRandInt(1, 100);
         
+        // Cannot verify answers as in other problems.
+        // Answer pool is entirely predetermined and cannot possibly duplicate.
         let question = baseText + "What is the derivative of: &emsp;f(x) = " + questFunc + "?";
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     } else { // Calculate f'(c), given f(x) = x^3 + ax + b?
+        let lowerBound = -20;
+        let upperBound = 100;
+
         let a = getRandAns([-1, 0, 1], -20, 20);
         let b = 2 * getRandAns([0], -100, 100);
         let c = getRandAns([0], -6, 6);
@@ -371,16 +417,8 @@ function nextCalculus(variation, baseText, numSolved, questNum, diff, attempts, 
         let ansChoices = [trueAns, missedPrimeAns, secondDerivAns];
         ansChoices.push(getCloseAns(ansChoices));
         ansChoices.push(getTensAns(ansChoices));
-
-        for (let i = 1; i < ansChoices.length - 1; i++) {
-            for (let j = 0; j < ansChoices.length; j++) {
-                if (j != i && ansChoices[i] == ansChoices[j]) {
-                    ansChoices[i] = getRandAns(ansChoices, -20, 100);
-                    break;
-                }
-            }
-        }
         
+        ansChoices = verifyAnswers(ansChoices, lowerBound, upperBound);
         let question = baseText + `Calculate f'(${c}), given f(x) = x<sup>3</sup> ${getOperator(a)} ${Math.abs(a)} x ${getOperator(b)} ${Math.abs(b)}.`;
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
     }
@@ -498,7 +536,6 @@ function correctAnswer(numSolved) {
         leftText.innerHTML = `You are currently in: &emsp;${MAP_NAMES[numSolved]}<br>`
         leftText.innerHTML += `Your Rule 7 number is:&emsp;${nextRandInt(0, 10)}<br>`;
         leftText.innerHTML += 'Click "Continue" for the next problem.';
-        console.log(numSolved, MAP_NAMES.length)
         makeButton("Continue", `removeClass('contButton'); removeClass('ansButton'); questionSetup(${numSolved}, 0, 0);`, "contButton", "", "end");
     } else {
         centeredText.innerHTML = `Rule Completed!<br>Your final Rule 7 number is:&emsp;${nextRandInt(0, 10)}<br>Good luck in e02 :)`;
