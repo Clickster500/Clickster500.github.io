@@ -224,7 +224,6 @@ function nextArithmetic(variation, baseText, numSolved, questNum, diff, attempts
 }
 
 function nextAlgebra(variation, baseText, numSolved, questNum, diff, attempts, totAttempts) {
-    variation = 1 // TESTING ONLY REMOVE.
     if (variation == 0) { // a(x + b) = n*a
         let lowerBound = -20;
         let upperBound = 20;
