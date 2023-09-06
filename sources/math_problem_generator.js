@@ -60,7 +60,7 @@ function getRandAns(allAns, lower, upper) {
 function verifyAnswers(allAns, lower, upper) {
     for (let i = 1; i < allAns.length; i++) {
         for (let j = 0; j < i; j++) {
-            if (allAns[i] == allAns[j]) {
+            if (allAns[i] === allAns[j]) {
                 allAns[i] = getRandAns(allAns, lower, upper);
             }
         }
@@ -131,13 +131,13 @@ async function nextQuestion(numSolved, questNum, diff, attempts, totAttempts) {
     let baseText = getBaseText(numSolved, questNum, attempts);
     
     // Negative numSolved values correspond to practicing a specific difficulty.
-    if (numSolved == -1) {
+    if (numSolved === -1) {
         diff = 15; // Arithmetic
-    } else if(numSolved == -2) {
+    } else if(numSolved === -2) {
         diff = 30; // Algebra I
-    }else if (numSolved == -3) {
+    }else if (numSolved === -3) {
         diff = 45; // Geometry or Basic Trig
-    } else if (numSolved == -4) {
+    } else if (numSolved === -4) {
         diff = 60; // Basic Calculus
     }
     
@@ -145,7 +145,7 @@ async function nextQuestion(numSolved, questNum, diff, attempts, totAttempts) {
     await sleep(attempts * 500);
     
     let variation = nextRandInt(0, 2);
-    if (diff < 5 || (attempts == 0 && diff < numSolved + 5)) {
+    if (diff < 5 || (attempts === 0 && diff < numSolved + 5)) {
         baseText += "<div align='left'>Category: FREE PASS</div><br>";
         nextFree(baseText, numSolved);
     } else if (diff < 20) {
@@ -164,7 +164,7 @@ async function nextQuestion(numSolved, questNum, diff, attempts, totAttempts) {
 }
 
 function nextArithmetic(variation, baseText, numSolved, questNum, diff, attempts, totAttempts) {
-    if (variation == 0) { // 1-3 Digit addition.
+    if (variation === 0) { // 1-3 Digit addition.
         let lowerBound = 11;
         let upperBound = 300;
 
@@ -185,7 +185,7 @@ function nextArithmetic(variation, baseText, numSolved, questNum, diff, attempts
         ansChoices = verifyAnswers(ansChoices, lowerBound, upperBound);
         let question = baseText + `What is: &emsp; ${a} + ${b}?`;
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
-    } else if (variation == 1) { // 1-3 Digit subtration.
+    } else if (variation === 1) { // 1-3 Digit subtration.
         let lowerBound = 0;
         let upperBound = 199;
 
@@ -210,7 +210,7 @@ function nextArithmetic(variation, baseText, numSolved, questNum, diff, attempts
         let b = nextRandInt(1, 10);
         let trueAns = a * b;
         let addAns = a + b;
-        if (addAns == trueAns) { addAns++;}
+        if (addAns === trueAns) { addAns++;}
         let subtrAns = a - b;
         
         let ansChoices = [trueAns, addAns, subtrAns];
@@ -224,7 +224,7 @@ function nextArithmetic(variation, baseText, numSolved, questNum, diff, attempts
 }
 
 function nextAlgebra(variation, baseText, numSolved, questNum, diff, attempts, totAttempts) {
-    if (variation == 0) { // a(x + b) = n*a
+    if (variation === 0) { // a(x + b) = n*a
         let lowerBound = -20;
         let upperBound = 20;
 
@@ -243,7 +243,7 @@ function nextAlgebra(variation, baseText, numSolved, questNum, diff, attempts, t
         ansChoices = verifyAnswers(ansChoices, lowerBound, upperBound);
         let question = baseText + `Solve for x: &emsp; ${a}(x ${getOperator(b)} ${Math.abs(b)}) = ${na}.`;
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
-    } else if (variation == 1) { // Evaluate x(ax + b) at x = c.
+    } else if (variation === 1) { // Evaluate x(ax + b) at x = c.
         let lowerBound = -240;
         let upperBound = 240;
 
@@ -254,7 +254,7 @@ function nextAlgebra(variation, baseText, numSolved, questNum, diff, attempts, t
         let signAns1 = c*(a*c - b);
         let signAns2 = -1*trueAns;
         let signAns3 = -1*signAns1;
-        if (c == 0 || a == 0) {
+        if (c === 0 || a === 0) {
             signAns1 = -1*b;
             signAns2 = getRandAns([trueAns, signAns1], lowerBound, upperBound);
             signAns3 = getRandAns([trueAns, signAns1, signAns2], lowerBound, upperBound);
@@ -294,7 +294,7 @@ function nextAlgebra(variation, baseText, numSolved, questNum, diff, attempts, t
 }
 
 function nextGeometry(variation, baseText, numSolved, questNum, diff, attempts, totAttempts) {
-    if (variation == 0) { // 30°-60°-90° triangle. Find length b or c given a
+    if (variation === 0) { // 30°-60°-90° triangle. Find length b or c given a
         let lowerBound = 1;
         let upperBound = 200;
 
@@ -323,7 +323,7 @@ function nextGeometry(variation, baseText, numSolved, questNum, diff, attempts, 
         let question = baseText + "In a 30°-60°-90° triangle:<br>The short leg has a length of " + a + ".<br><br>";
         question += "What is the length of the " + goal + "?";
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
-    } else if (variation == 1) { // sin(x) in first quadrant
+    } else if (variation === 1) { // sin(x) in first quadrant
         const ANGLES = ["0°", "30°", "45°", "60°", "90°"];
         let ans = ['0', "1 / 2", "1 / (√2)", "(√3) / 2", '1'];
         let index = nextRandInt(0, 4);
@@ -362,7 +362,7 @@ function nextGeometry(variation, baseText, numSolved, questNum, diff, attempts, 
 }
 
 function nextCalculus(variation, baseText, numSolved, questNum, diff, attempts, totAttempts) {
-    if (variation == 0) { // What is the area under y = 2x from a to b.
+    if (variation === 0) { // What is the area under y = 2x from a to b.
         let lowerBound = -100;
         let upperBound = 100;
         
@@ -379,7 +379,7 @@ function nextCalculus(variation, baseText, numSolved, questNum, diff, attempts, 
         ansChoices = verifyAnswers(ansChoices, lowerBound, upperBound);
         let question = baseText + `What is the area under y = 2x from x=${a} to x=${b}?`;
         getAnswer(question, ansChoices, numSolved, questNum, diff, attempts, totAttempts);
-    } else if (variation == 1) { // Derivatives of common, non-polynomial functions.
+    } else if (variation === 1) { // Derivatives of common, non-polynomial functions.
         const FUNCTIONS = ["e<sup>x</sup>", "sin(x)", "cos(x)", "ln(x)", "cosh(x)"];
         let ans = ["e<sup>x</sup>", "cos(x)", "-sin(x)", "1 / x", "sinh(x)"];
         let index = nextRandInt(0, 4);
@@ -387,7 +387,7 @@ function nextCalculus(variation, baseText, numSolved, questNum, diff, attempts, 
         
         let lastAns = ans.splice(nextRandInt(0, 3), 1);
 
-        if (trueAns == "sinh(x)") {
+        if (trueAns === "sinh(x)") {
             ans.splice(nextRandInt(0, 2), 1);
             var ansChoices = [trueAns, "-sinh(x)", ans[0], ans[1], lastAns];
         } else {
@@ -440,10 +440,10 @@ function choice(numSolved, questNum, diff, attempts, totAttempts, indexSelected)
         elems[i].setAttribute("disabled", true);
 
         let keyVal = elems[i].getAttribute("id");
-        if (keyVal % KEY == 0) {
+        if (keyVal % KEY === 0) {
             elems[i].setAttribute("id", "correctAnswer");
-            var wasCorrect = (i == indexSelected);
-        } else if (i == indexSelected) {
+            var wasCorrect = (i === indexSelected);
+        } else if (i === indexSelected) {
             elems[i].setAttribute("id", "wrongAnswer");
         }
     }
@@ -476,7 +476,7 @@ function findStart() {
     printInstruct("What was the last level you beat?");
     for (let i = 1; i < MAP_NAMES.length - 1; i++) {
         makeButton(MAP_NAMES[i], "removeClass('findStart'); begin("+i+");", "findStart");
-        if (i % 4 == 0) {
+        if (i % 4 === 0) {
             addLineBreak("findStart");
         }
     }
@@ -491,7 +491,7 @@ function getAnswer(promptText, ansChoices, numSolved, questNum, diff, attempts, 
     printInstruct(promptText);
     
     let isAnsFound = false;
-    if (nextRandInt(0, 4) == 4) {
+    if (nextRandInt(0, 4) === 4) {
         isAnsFound = true;
         ansChoices.shift();
     }
@@ -499,7 +499,7 @@ function getAnswer(promptText, ansChoices, numSolved, questNum, diff, attempts, 
     for (let i = 0; i < 4; i++) {
         let index = nextRandInt(0, 3-i);
         
-        if (index == 0 && !isAnsFound) {
+        if (index === 0 && !isAnsFound) {
             isAnsFound = true;
             makeButton(ANSWER_KEY[i] + ". " + ansChoices[index], `choice(${numSolved}, ${questNum}, ${diff}, ${attempts}, ${totAttempts}, ${i});`, "ansButton", getKey(1));
         } else {
@@ -507,12 +507,12 @@ function getAnswer(promptText, ansChoices, numSolved, questNum, diff, attempts, 
         }
         
         ansChoices.splice(index, 1);
-        if (i % 2 == 1) {
+        if (i % 2 === 1) {
             addLineBreak("ansButton");
         }
     }
     
-    if (ansChoices.length == 0) {
+    if (ansChoices.length === 0) {
         makeButton("E. None of the above", `choice(${numSolved}, ${questNum}, ${diff}, ${attempts}, ${totAttempts}, 4);`, "ansButton", getKey(1));
     } else {
         makeButton("E. None of the above", `choice(${numSolved}, ${questNum}, ${diff}, ${attempts}, ${totAttempts}, 4);`, "ansButton", getKey(0));
@@ -567,7 +567,7 @@ function resetPractice() {
     let catNames = ["Arithmetic", "Algebra I", "Geometry or Basic Trig", "Basic Calculus"];
     for (let i = 0; i < catNames.length; i++) {
         makeButton(catNames[i], `removeClass('practButton'); practice(${i+1});`, "practButton");
-        if (i == 1) {
+        if (i === 1) {
             addLineBreak("practButton");
         }
     }
