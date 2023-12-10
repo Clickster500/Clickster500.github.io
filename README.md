@@ -19,7 +19,7 @@ There are four different problem categories-- Arithmetic, Algebra I, Geometry or
 
 There is no requirement to get all the questions right, but there is a time penalty for consecutive wrong answers. If you miss enough attempts in a row (at most, 15), the problem category will become easier. If even more attempts are missed, it will drop down to free pass. There is no fail condition for this rule.
 
-If you are curious about any specific details, the source code is available in sources/math_problem_generator.js. I am happy to answer any questions, just DM me on twitter (<a href="https://twitter.com/Clickster500">@Clickster500</a>).
+If you are curious about any specific details, the source code is available in sources/math_problem_generator.js. I am happy to answer any questions. You can DM me on twitter (<a href="https://twitter.com/Clickster500">@Clickster500</a>), but I open twitter about once a month. I check my email much more frequently, clickster500@gmail.com.
 
 <br>
 
