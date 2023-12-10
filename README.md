@@ -3,7 +3,7 @@
 
 The text of rule TBD reads as follows:
 
->After each loading zone, you must correctly answer a math question as generated on <a style="color: red; text-decoration: underline;" href="https://clickster500.github.io/math_generator/">this website</a>. Must be shown on screen (either via screen capture or a live camera). Pen/pencil and paper is allowed, but calculators and any other outside resources are not. If you need additional help, instructions and practice are <a style="color: red; text-decoration: underline;" href="https://clickster500.github.io/math_help/">available here</a>.
+>After each loading zone and before starting the next level, you must correctly answer a math question as generated on <a style="color: red; text-decoration: underline;" href="https://clickster500.github.io/math_generator/">this website</a>. Must be shown on screen (either via screen capture or a live camera). Pen/pencil and paper is allowed, but calculators and any other outside resources are not. If you need additional help, instructions and practice are <a style="color: red; text-decoration: underline;" href="https://clickster500.github.io/math_help/">available here</a>.
 
 This project seeks to encourage a love of math in all future participants of the iJustine Challenge... Or instill fear.
 
