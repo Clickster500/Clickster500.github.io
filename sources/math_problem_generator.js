@@ -2,6 +2,9 @@ const MAP_NAMES = ["00/01", "02/03", "04/05", "06/07", "08", "09", "10", "11/12"
 const ANSWER_KEY = ['A', 'B', 'C', 'D', 'E'];
 const KEY = Date.now();
 
+// As much as I hate global variables (besides constants), there isn't a better way to implement optional rule 7 support.
+let rule7 = false;
+
 ////////////////////////////////////////////////////////////////////////////////
 // Helper functions (return values used by main/configure on screen text)
 ////////////////////////////////////////////////////////////////////////////////
@@ -465,9 +468,13 @@ function begin(numSolved = 0) {
     removeClass("begin");
     
     let introduction = "You should be able to solve all problems in your head";
-    introduction += ", but pen/pencil and paper is allowed.<br>"
-    printInstruct(introduction + 'Click "Continue" for the first question.');
-    
+    introduction += ", but pen/pencil and paper is allowed.";
+    printInstruct(introduction);
+
+    makeText('If you want a number to be generated in compliance with Rule 7 after each problem, click "Add Rule 7."<br>', "contButton", "rule7Text"); 
+    makeButton("Add Rule 7", "enableRule7()", "contButton", "rule7Button");
+
+    makeText('<br>Click "Continue" for the first question.', "contButton"); 
     makeButton("Continue", "removeClass('contButton'); questionSetup(" + numSolved + ",0,0);", "contButton");
 }
 
@@ -533,11 +540,21 @@ function correctAnswer(numSolved) {
     if (numSolved < MAP_NAMES.length - 1) {
         centeredText.innerHTML = "CORRECT!";
         leftText.innerHTML = `You are currently in: &emsp;${MAP_NAMES[numSolved]}<br>`
-        leftText.innerHTML += `Your Rule 7 number is:&emsp;${nextRandInt(0, 10)}<br>`;
+
+        if (rule7) {
+            leftText.innerHTML += `Your Rule 7 number is:&emsp;${nextRandInt(0, 10)}<br>`;
+        }
+        
         leftText.innerHTML += 'Click "Continue" for the next problem.';
         makeButton("Continue", `removeClass('contButton'); removeClass('ansButton'); questionSetup(${numSolved}, 0, 0);`, "contButton", "", "end");
     } else {
-        centeredText.innerHTML = `Rule Completed!<br>Your final Rule 7 number is:&emsp;${nextRandInt(0, 10)}<br>Good luck in e02 :)`;
+        centeredText.innerHTML = "Rule Completed!<br>";
+
+        if (rule7) {
+            centeredText.innerHTML += `Your final Rule 7 number is:&emsp;${nextRandInt(0, 10)}<br>`;
+        }
+        
+        centeredText.innerHTML += "Good luck in e02 :)";
         makeButton("Reset", "removeClass('contButton'); removeClass('ansButton'); resetNorm();", "contButton", "stopButton", "end");
     }
 }
@@ -571,4 +588,11 @@ function resetPractice() {
             addLineBreak("practButton");
         }
     }
+}
+
+function enableRule7() {
+    rule7 = true;
+    document.getElementById("rule7Button").remove();
+    text = document.getElementById("rule7Text");
+    text.innerHTML = "Rule 7 support has been enabled. To disable this feature, refresh the page (this will return to the first screen).";
 }
