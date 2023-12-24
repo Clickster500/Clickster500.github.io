@@ -3,7 +3,7 @@
 
 The text of rule TBD reads as follows:
 
->After each loading zone, you must correctly answer a math question as generated on <a style="color: red; text-decoration: underline;" href="https://clickster500.github.io/math_generator/">this website</a>. Must be shown on screen (either via screen capture or a live camera). Pen/pencil and paper is allowed, but calculators and any other outside resources are not. If you need additional help, instructions and practice are <a style="color: red; text-decoration: underline;" href="https://clickster500.github.io/math_help/">available here</a>.
+>After each loading zone and before starting the next level, you must correctly answer a math question as generated on <a style="color: red; text-decoration: underline;" href="https://clickster500.github.io/math_generator/">this website</a>. Must be shown on screen (either via screen capture or a live camera). Pen/pencil and paper is allowed, but calculators and any other outside resources are not. If you need additional help, instructions and practice are <a style="color: red; text-decoration: underline;" href="https://clickster500.github.io/math_help/">available here</a>. Here is the <a style="color: red; test-decoration: underline;" href="https://github.com/Clickster500/Clickster500.github.io">source code</a>.
 
 This project seeks to encourage a love of math in all future participants of the iJustine Challenge... Or instill fear.
 
@@ -19,7 +19,7 @@ There are four different problem categories-- Arithmetic, Algebra I, Geometry or
 
 There is no requirement to get all the questions right, but there is a time penalty for consecutive wrong answers. If you miss enough attempts in a row (at most, 15), the problem category will become easier. If even more attempts are missed, it will drop down to free pass. There is no fail condition for this rule.
 
-If you are curious about any specific details, the source code is available in sources/math_problem_generator.js. I am happy to answer any questions, just DM me on twitter (<a href="https://twitter.com/Clickster500">@Clickster500</a>).
+If you are curious about any specific details, the source code is available in sources/math_problem_generator.js. I am happy to answer any questions. You can DM me on twitter (<a href="https://twitter.com/Clickster500">@Clickster500</a>), but I open twitter about once a month. I check my email much more frequently, clickster500@gmail.com.
 
 <br>
 
